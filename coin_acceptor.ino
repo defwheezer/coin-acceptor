@@ -1,5 +1,5 @@
-#define COIN_PIN 2 // use one of the arduino interrupt pins (0 = pin 2, 1 = pin 3)
-#define ledPin 9  // Add if needed to PWM pin for LED level adj.
+const int COIN_PIN = 2; // use one of the arduino interrupt pins (0 = pin 2, 1 = pin 3)
+const int ledPin = 9;  // Add if needed to PWM pin for LED level adj.
 
 //save strings to ROM to save SRAM, failsafe for coins entered
 #include <avr/pgmspace.h>
@@ -58,7 +58,7 @@ void loop()
   
   //only do if done detecting pulses for a while (usere done entering coins)
   if(timeFromLastPulse > 2000 && money != prevMoney) { 
-     Serial.print("Total recieved ");
+     Serial.print("Total received ");
      Serial.println(money);
      prevMoney = 0;
      money = 0;
