@@ -53,61 +53,59 @@ void coinISR()
 
 void loop()
 {
+  //used to check if we have any coins inserted
   long timeFromLastPulse = millis() - timeLastPulse;
+  
   //only do if done detecting pulses for a while (usere done entering coins)
   if(timeFromLastPulse > 2000 && money != prevMoney) { 
-       Serial.print("Total recieved ");
-       Serial.println(money);
-       int sayDollars = int(money/100); //get integer part
-       int sayCents = money - (sayDollars*100); //get integer part
-       String txt;
-       
-   
-      prevMoney = 0;
-      money = 0;
+     Serial.print("Total recieved ");
+     Serial.println(money);
+     prevMoney = 0;
+     money = 0;
   }
   
   if (pulses > 0 && timeFromLastPulse > 200)
   {
     // sequence of pulses stopped; determine the coin type;
-    if (pulses == 2)
-    {
-      strcpy_P(buffer, (PGM_P)pgm_read_word(&(string_table[0]))); // Necessary casts and dereferencing
-      Serial.println( buffer );
-      money += 1;
-    }
-    else if (pulses == 4)
-    {
-      strcpy_P(buffer, (PGM_P)pgm_read_word(&(string_table[1]))); // Necessary casts and dereferencing
-      Serial.println( buffer );
-      money += 5;
-    }
-    else if (pulses == 6)
-    {
-      strcpy_P(buffer, (PGM_P)pgm_read_word(&(string_table[2]))); // Necessary casts and dereferencing
-      Serial.println( buffer );
-      money += 10;
-    }
-    else if (pulses == 8)
-    {
-      strcpy_P(buffer, (PGM_P)pgm_read_word(&(string_table[3]))); // Necessary casts and dereferencing.
-      Serial.println( buffer );
-      money += 25;
-    }
-    else
-    {
-      strcpy_P(buffer, (PGM_P)pgm_read_word(&(string_table[4]))); // Necessary casts and dereferencing, just copy.
-      Serial.print( buffer );
-      Serial.print(" ");
-      Serial.print(pulses);
-      Serial.println(" pulses");
-      ledState = HIGH;
-      digitalWrite(ledPin, ledState);
-      delay(500);
-      ledState = LOW;
-      digitalWrite(ledPin, ledState);
-      Serial.println("End coin error...");      
-    }
+    switch(pulses) {
+      case '2':
+        strcpy_P(buffer, (PGM_P)pgm_read_word(&(string_table[0]))); // Necessary casts and dereferencing, just copy.
+        Serial.println( buffer );
+        money += 1;
+      break;
+      
+      case '4':
+        strcpy_P(buffer, (PGM_P)pgm_read_word(&(string_table[1]))); // Necessary casts and dereferencing, just copy.
+        Serial.println( buffer );
+        money += 5;
+      break;
+
+      case '6':
+        strcpy_P(buffer, (PGM_P)pgm_read_word(&(string_table[2]))); // Necessary casts and dereferencing, just copy.
+        Serial.println( buffer );
+        money += 10;
+      break;
+      
+      case '8':
+        strcpy_P(buffer, (PGM_P)pgm_read_word(&(string_table[3]))); // Necessary casts and dereferencing, just copy.
+        Serial.println( buffer );
+        money += 25;
+      break;
+
+      default:
+        strcpy_P(buffer, (PGM_P)pgm_read_word(&(string_table[4]))); // Necessary casts and dereferencing, just copy.
+        Serial.print( buffer );
+        Serial.print(" ");
+        Serial.print(pulses);
+        Serial.println(" pulses");
+        ledState = HIGH;
+        digitalWrite(ledPin, ledState);
+        delay(500);
+        ledState = LOW;
+        digitalWrite(ledPin, ledState);
+        Serial.println("End coin error...");      
+      break;
+      }
 
     pulses = 0;
   }
