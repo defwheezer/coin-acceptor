@@ -1,9 +1,9 @@
-#define COIN_PIN 2
-#define ledPin 9  // Add if needed to PWM pin
+#define COIN_PIN 2 // use one of the arduino interrupt pins (0 = pin 2, 1 = pin 3)
+#define ledPin 9  // Add if needed to PWM pin for LED level adj.
 
-//save strings to ROM to save SRAM
+//save strings to ROM to save SRAM, failsafe for coins entered
 #include <avr/pgmspace.h>
-char const coin_0[] PROGMEM = "Received Penny"; // "String 0" etc are strings to store - change to suit.
+char const coin_0[] PROGMEM = "Received Penny"; // "Received Penny" etc are strings to store - change to suit.
 char const coin_1[] PROGMEM = "Received  Nickel";
 char const coin_2[] PROGMEM = "Received  Dime";
 char const coin_3[] PROGMEM = "Received Quarter";
